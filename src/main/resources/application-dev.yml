@@ -1,0 +1,10 @@
+####################
+#### 开发环境配置####
+###################
+server:
+   port: 8089 #端口
+   servlet:
+      context-path: /iTranswarp #访问项目名称
+      session:
+        timeout: 60m  #seesion失效时间
+
