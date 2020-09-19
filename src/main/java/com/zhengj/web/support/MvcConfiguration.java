@@ -8,11 +8,26 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ViewResolver;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 public class MvcConfiguration {
 
     private static Logger LOGGER = LoggerFactory.getLogger(MvcConfiguration.class);
+
+    @Bean
+    WebMvcConfigurer createWebMvcConfigurer() {
+        return new WebMvcConfigurer() {
+            @Override
+            public void addResourceHandlers(ResourceHandlerRegistry registry) {
+                LOGGER.info("static registry");
+                registry.addResourceHandler("/static/**")
+                        .addResourceLocations("classpath:/static/");
+            }
+        };
+    }
 
     /**
      * Init view resolver.  要先扫描在能用Bean初始化
