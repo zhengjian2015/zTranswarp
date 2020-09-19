@@ -1,6 +1,6 @@
 {% extends '../_manage.html' %}
 
-{% block title %} All Categories {% endblock %}
+{% block title %} {{ _('All Categories') }} {% endblock %}
 
 {% block head %}
 <script>
@@ -28,26 +28,26 @@
 <div id="error" class="uk-width-1-1">
 </div>
 <div id="loading" class="uk-width-1-1">
-    <i class="uk-icon-spinner uk-icon-spin"></i>  _('Loading') ...
+    <i class="uk-icon-spinner uk-icon-spin"></i>  {{ _('Loading') }}...
 </div>
 
 <div id="vm" class="uk-width-1-1">
     <ul data-uk-tab class="uk-tab">
         <li><a href="#0" onclick="location.assign('/manage/article/')">{{ _('Articles') }}</a></li>
-        <li class="uk-active"><a href="#0"> _('Categories') </a></li>
+        <li class="uk-active"><a href="#0"> {{ _('Categories') }} </a></li>
     </ul>
     <div class="uk-margin">
-        <a href="javascript:refresh()" class="uk-button"><i class="uk-icon-refresh"></i>  _('Refresh') </a>
+        <a href="javascript:refresh()" class="uk-button"><i class="uk-icon-refresh"></i>  {{ _('Refresh') }} </a>
         <a href="category_create" class="uk-button uk-button-primary uk-float-right"><i class="uk-icon-plus"></i>
-            _('New Category') </a>
+            {{ _('New Category') }} </a>
     </div>
 
     <table class="uk-table uk-table-hover">
         <thead>
         <tr>
-            <th width="20%"> _('Name') </th>
-            <th width="30%"> _('Description') </th>
-            <th width="15%"> _('Created At') </th>
+            <th width="20%"> {{ _('Name') }} </th>
+            <th width="30%"> {{ _('Description') }} </th>
+            <th width="15%"> {{ _('Created At') }} </th>
             <th width="15%">&nbsp;</th>
         </tr>
         </thead>
@@ -64,6 +64,11 @@
     </table>
     <div v-if="categories.length===0" class="x-empty-list">
         <p>No category found.</p>
+    </div>
+
+    <div id="sort" class="uk-margin" style="text-align:right; display:none">
+        <button type="button" class="uk-button uk-button-success"><i class="uk-icon-list"></i>
+            {{ _('Save Orders') }}</button>
     </div>
 
 </div>

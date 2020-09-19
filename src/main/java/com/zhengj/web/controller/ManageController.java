@@ -69,10 +69,8 @@ public class ManageController extends AbstractController {
     }
 
     private void appendGlobalModelAndView(ModelAndView mv) {
-        System.out.println("******************2");
         //Translator locale = translators.getTranslator(localeResolver.resolveLocale(null));
         Translator locale = translators.getTranslator(new Locale("zh","CN"));
-        System.out.println(locale.getLocaleName());
         //这里的__translator__ 不是给前端的
         mv.addObject("__translator__",locale);
         System.out.println(locale);
