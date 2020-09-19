@@ -4,7 +4,6 @@
 
 {% block head %}
 <script>
-
     $(function () {
         getJSON('api/categories', function (err, data) {
             if (err) {
@@ -13,7 +12,6 @@
             initVM(data.results);
         });
     });
-
 
     function initVM(data) {
         window.vm = new Vue({
@@ -35,7 +33,7 @@
 
 <div id="vm" class="uk-width-1-1">
     <ul data-uk-tab class="uk-tab">
-        <li><a href="#0" onclick="location.assign('/manage/article/')"> _('Articles') </a></li>
+        <li><a href="#0" onclick="location.assign('/manage/article/')">{{ _('Articles') }}</a></li>
         <li class="uk-active"><a href="#0"> _('Categories') </a></li>
     </ul>
     <div class="uk-margin">

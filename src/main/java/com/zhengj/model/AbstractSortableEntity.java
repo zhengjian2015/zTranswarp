@@ -12,11 +12,4 @@ public abstract class AbstractSortableEntity extends AbstractEntity {
     @Column(nullable = false)
     private long displayOrder;
 
-    public long getDisplayOrder() {
-        return displayOrder;
-    }
-
-    public void setDisplayOrder(long displayOrder) {
-        this.displayOrder = displayOrder;
-    }
 }

@@ -1,21 +1,30 @@
 package com.zhengj.web.controller;
 
 import com.zhengj.model.Category;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.zhengj.web.view.i18n.Translator;
+import com.zhengj.web.view.i18n.Translators;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 @Controller
 @RequestMapping("/manage")
-public class ManageController extends AbstractController{
+public class ManageController extends AbstractController {
+
+    @Autowired
+    private Translators translators;
+
+    @Autowired
+    LocaleResolver localeResolver;
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
     // attachment
@@ -28,7 +37,7 @@ public class ManageController extends AbstractController{
             }
         };
         LOGGER.info("进入attachment");
-        return prepareModelAndView("manage/attachment/attachment_list.html",pages);
+        return prepareModelAndView("manage/attachment/attachment_list.html", pages);
     }
 
 
@@ -38,8 +47,8 @@ public class ManageController extends AbstractController{
 
     @GetMapping("/article/category_list")
     public ModelAndView articleCategoryList() {
-        List<Category> categories = articleService. getCategories();
-        LOGGER.info("categories是{}",categories.size());
+        List<Category> categories = articleService.getCategories();
+        LOGGER.info("categories是{}", categories.size());
         Map<String, Object> categoriesList = new HashMap<String, Object>() {
             {
                 put("categories", categories);
@@ -55,7 +64,17 @@ public class ManageController extends AbstractController{
 
     private ModelAndView prepareModelAndView(String view, Map<String, Object> model) {
         ModelAndView mv = new ModelAndView(view, model);
-        // appendGlobalModelAndView(mv);
+        appendGlobalModelAndView(mv);
         return mv;
+    }
+
+    private void appendGlobalModelAndView(ModelAndView mv) {
+        System.out.println("******************2");
+        //Translator locale = translators.getTranslator(localeResolver.resolveLocale(null));
+        Translator locale = translators.getTranslator(new Locale("zh","CN"));
+        System.out.println(locale.getLocaleName());
+        //这里的__translator__ 不是给前端的
+        mv.addObject("__translator__",locale);
+        System.out.println(locale);
     }
 }
