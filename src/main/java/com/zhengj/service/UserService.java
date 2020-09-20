@@ -5,16 +5,21 @@ import com.zhengj.dao.UserMapper;
 import com.zhengj.enums.ApiError;
 import com.zhengj.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-@Component
+
+@Service
 public class UserService extends AbstractService<User> {
 
     @Autowired
     private UserMapper userMapper;
+
+    public User getById(long id) {
+        return userMapper.selectByPrimaryKey(id);
+    }
 
     public List<User> getUsersByIds(long... ids) {
         if (ids.length == 0) {

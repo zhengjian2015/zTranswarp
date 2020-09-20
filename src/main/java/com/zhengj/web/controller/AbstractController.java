@@ -2,6 +2,7 @@ package com.zhengj.web.controller;
 
 import com.zhengj.service.ArticleService;
 import com.zhengj.service.AttachmentService;
+import com.zhengj.service.BoardService;
 import com.zhengj.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,4 +22,7 @@ public abstract class AbstractController {
 
     @Autowired
     protected AttachmentService attachmentService;
+
+    @Autowired
+    protected BoardService boardService;
 }

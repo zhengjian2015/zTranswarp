@@ -9,12 +9,13 @@ import com.zhengj.model.Resource;
 import com.zhengj.util.ImageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.*;
 
-@Component
+@Service
 public class AttachmentService extends AbstractService<Attachment> {
 
     @Autowired
