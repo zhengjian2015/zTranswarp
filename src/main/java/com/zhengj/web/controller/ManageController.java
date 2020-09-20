@@ -4,6 +4,7 @@ import com.zhengj.model.Category;
 import com.zhengj.web.view.i18n.Translator;
 import com.zhengj.web.view.i18n.Translators;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,6 +20,9 @@ import java.util.Map;
 @Controller
 @RequestMapping("/manage")
 public class ManageController extends AbstractController {
+
+    @Value("${server.servlet.context-path}")
+    private String server;
 
     @Autowired
     private Translators translators;
@@ -55,6 +59,17 @@ public class ManageController extends AbstractController {
             }
         };
         return prepareModelAndView("manage/article/category_list.html", categoriesList);
+    }
+
+    @GetMapping("/article/category_create")
+    public ModelAndView articleCategoryCreate() {
+        Map<String, Object> maps = new HashMap<String, Object>() {
+            {
+                put("id", 0);
+                put("action", server + "/api/categories");
+            }
+        };
+        return prepareModelAndView("manage/article/category_form.html", maps);
     }
 
 

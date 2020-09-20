@@ -16,5 +16,10 @@
     <select id="getCategories" resultMap="BaseResultMap">
 		select * from categories order by display_order asc;
 	</select>
+
+    <insert id="insertCategory" parameterType="com.zhengj.model.Category">
+    	INSERT INTO categories VALUES (#{id}, #{createdAt}, #{displayOrder},
+    	 #{updatedAt}, #{version}, #{tag}, #{name}, #{description})
+    </insert>
 </mapper>
 

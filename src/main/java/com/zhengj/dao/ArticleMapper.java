@@ -11,4 +11,5 @@ public interface ArticleMapper  {
 
     List<Category> getCategories();
 
+    int insertCategory(Category category);
 }

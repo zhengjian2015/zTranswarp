@@ -20,6 +20,58 @@
     <script src="../../static/js/uikit/components/htmleditor.js"></script>
 
     <script src="../../static/js/shared.js"></script>
+
+    <script>
+
+        var serverPath = "/iTranswarp";
+
+    // find a jQuery form object that within a #vm scope:
+    function findForm(vmId) {
+        var $form = $('#' + (vmId || 'vm'));
+        if (! $form.is('form')) {
+            $form = $form.find('form');
+        }
+        if (! $form.is('form')) {
+            console.log('WARN: findForm failed for: ' + vmId);
+        }
+        return $form;
+    }
+
+    // show form error whtin a #vm scope:
+    function showFormError(err, vmId) {
+        var $form = findForm(vmId);
+        var $alert = $form.find('.uk-alert-danger');
+        $alert.text(err.message || err.error).show();
+        if (err.error === 'parameter:invalid') {
+            if (err.data) {
+                $form.find('input[name=' + err.data + ']').addClass('uk-form-danger');
+                $form.find('select[name=' + err.data + ']').addClass('uk-form-danger');
+            }
+        }
+        if (($alert.offset().top - 60) < $(window).scrollTop()) {
+            $('html,body').animate({ scrollTop: $alert.offset().top - 60 });
+        }
+    }
+
+    function clearFormError(vmId) {
+        var $form = findForm(vmId);
+        var $err = $form.find('.uk-alert-danger');
+        $err.text('').hide();
+        $form.find('input').removeClass('uk-form-danger');
+        $form.find('select').removeClass('uk-form-danger');
+    }
+
+
+        function onJsonFormError(resp) {
+        resp.json().then(function (result) {
+            console.log('Error: ' + JSON.stringify(result));
+            // try find form:
+            clearFormError();
+            showFormError(result);
+        });
+    }
+
+    </script>
 </head>
     {% block head %}<!-- block head  -->{% endblock %}
 <body>

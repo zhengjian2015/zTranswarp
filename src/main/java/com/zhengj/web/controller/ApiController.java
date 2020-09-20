@@ -1,9 +1,8 @@
 package com.zhengj.web.controller;
 
+import com.zhengj.bean.CategoryBean;
 import com.zhengj.model.Category;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -28,4 +27,11 @@ public class ApiController extends AbstractController {
         results.put(RESULTS, this.articleService.getCategories());
         return results;
     }
+
+    @PostMapping("/categories")
+    //@RoleWith(Role.ADMIN)
+    public Category categoryCreate(@RequestBody CategoryBean bean) {
+        return this.articleService.createCategory(bean);
+    }
+
 }
