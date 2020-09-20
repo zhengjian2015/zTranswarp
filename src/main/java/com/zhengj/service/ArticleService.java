@@ -92,4 +92,8 @@ public class ArticleService extends AbstractService<Article> {
         sortEntities("categories",categories, ids);
     }
 
+    public List<Article> getArticles() {
+        return articleMapper.selectAll();
+    }
+
 }

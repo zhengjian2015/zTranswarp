@@ -49,6 +49,18 @@ public class ManageController extends AbstractController {
     // article and categories
     ///////////////////////////////////////////////////////////////////////////////////////////////
 
+    @GetMapping("/article/")
+    public ModelAndView articleList(@RequestParam(value = "page", defaultValue = "1") int pageIndex) {
+
+        Map<String, Object> articleList = new HashMap<String, Object>() {
+            {
+                put("page", pageIndex);
+            }
+        };
+
+        return prepareModelAndView("manage/article/article_list.html", articleList);
+    }
+
     @GetMapping("/article/category_update")
     public ModelAndView articleCategoryUpdate(@RequestParam("id") long id) {
         Map<String, Object> categoriesList = new HashMap<String, Object>() {
