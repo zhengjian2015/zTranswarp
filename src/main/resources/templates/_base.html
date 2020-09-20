@@ -54,7 +54,10 @@
         .x-display-none { display: none; }
     </style>
 
+    {% block head %}<!-- head  -->{% endblock %}
+
     <script>
+        var serverPath = "/iTranswarp";
         console.log('init js ok.');
     </script>
 
@@ -136,7 +139,7 @@
                             </ul>
                         </div>
                     </li>
-                    <li class="x-display-if-not-signin uk-hidden-small"><a href="/auth/signin"><i class="uk-icon-sign-in"></i> {{ _('Sign In') }}</a></li>
+                    <li class="x-display-if-not-signin uk-hidden-small"><a href="/iTranswarp/auth/signin"><i class="uk-icon-sign-in"></i> {{ _('Sign In') }}</a></li>
                     <li class="x-display-if-not-signin uk-visible-small"><a href="/auth/signin"><i class="uk-icon-sign-in"></i></a></li>
                     <li class="uk-parent" data-uk-dropdown>
                         <a href="#0"><i class="uk-icon-globe"></i></a>

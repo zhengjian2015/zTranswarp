@@ -29,6 +29,17 @@ spring:
       testOnReturn: false
       poolPreparedStatements: true
       maxOpenPreparedStatements: 20
+  weibo:
+    name: Weibo
+    icon: weibo
+    color: #e92b00
+    client-id:
+    client-secret:
+
+  signin:
+    password:
+      # enable password signin:
+      enabled: true
 
 mybatis:
   config-location: classpath:mybatis/mybatis-config.xml
