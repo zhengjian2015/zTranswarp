@@ -71,6 +71,8 @@ if (! Number.prototype.toDateTime) {
     Number.prototype.toDateTime = function(format) {
         var fmt = format || 'yyyy-MM-dd hh:mm:ss'
         var dt = new Date(this);
+        console.log("dt date");
+        console.log(this);
         var arr = fmt.split(token);
         for (var i=0; i<arr.length; i++) {
             var s = arr[i];
@@ -355,7 +357,6 @@ function refresh() {
 function _httpJSON(method, url, data, callback) {
     var url = '/iTranswarp/' + url;
     console.log(url);
-    console.log("url");
     var opt = {
         type: method,
         dataType: 'json'

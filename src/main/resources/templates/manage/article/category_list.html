@@ -18,6 +18,56 @@
             el: '#vm',
             data: {
                 categories: data
+            },
+            created: function () {
+                $('#loading').hide();
+                $('#vm').show();
+            },
+            methods: {
+                find: function (id) {
+                    console.log("find:"+this.categories.findIndex(c=>c.id===id));
+                    return this.categories.findIndex(c=>c.id===id);
+                },
+                swap: function (index1, index2) {
+                    var obj = this.categories[index2];
+                    this.categories.splice(index2, 1);
+                    this.categories.splice(index1, 0, obj);
+                    $('#sort').show();
+                },
+                moveUp: function (id) {
+                    var index = this.find(id);
+                    if (index === (-1) || index === 0) {
+                        return;
+                    }
+                    this.swap(index - 1, index);
+                },
+                moveDown: function (id) {
+                    var index = this.find(id);
+                    if (index === (-1) || index === (this.categories.length - 1)) {
+                        return;
+                    }
+                    this.swap(index, index + 1);
+                },
+                sort: function (event) {
+                    this.$resource(serverPath +'/api/categories/sort').save({ids: this.categories.map(c=>c.id)}).then(function (resp) {
+                        resp.json().then(function (result) {
+                            refresh();
+                        });
+                    }, onJsonError);
+                },
+                editCategory: function (id) {
+                    location.assign('category_update?id=' + id);
+                },
+                deleteCategory: function (c) {
+                    var that = this;
+                    UIkit.modal.confirm('Category \"' + c.name + '\" will be deleted. Continue?', function () {
+                        that.$resource(serverPath + '/api/categories/' + c.id + '/delete').save({}).then(function (resp) {
+                            resp.json().then(function (result) {
+                                refresh();
+                            });
+                        }, onJsonError);
+                    });
+                }
             }
         });
     }
@@ -58,7 +108,16 @@
             </td>
             <td><span v-text="c.description"></span></td>
             <td><span v-text="c.createdAt.toDateTime()"></span></td>
-
+            <td>
+                <a v-on:click="moveUp(c.id)" title="Move this category up" href="#0" class="x-btn"><i
+                        class="uk-icon-arrow-up"></i></a>
+                <a v-on:click="moveDown(c.id)" title="Move this category down" href="#0" class="x-btn"><i
+                        class="uk-icon-arrow-down"></i></a>
+                <a v-on:click="editCategory(c.id)" title="Edit this category" href="#0" class="x-btn"><i
+                        class="uk-icon-edit"></i></a>
+                <a v-on:click="deleteCategory(c)" title="Delete this category" href="#0" class="x-btn"><i
+                        class="uk-icon-trash"></i></a>
+            </td>
         </tr>
         </tbody>
     </table>
@@ -67,7 +126,7 @@
     </div>
 
     <div id="sort" class="uk-margin" style="text-align:right; display:none">
-        <button type="button" class="uk-button uk-button-success"><i class="uk-icon-list"></i>
+        <button v-on:click="sort" type="button" class="uk-button uk-button-success"><i class="uk-icon-list"></i>
             {{ _('Save Orders') }}</button>
     </div>
 

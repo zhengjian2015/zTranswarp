@@ -49,6 +49,17 @@ public class ManageController extends AbstractController {
     // article and categories
     ///////////////////////////////////////////////////////////////////////////////////////////////
 
+    @GetMapping("/article/category_update")
+    public ModelAndView articleCategoryUpdate(@RequestParam("id") long id) {
+        Map<String, Object> categoriesList = new HashMap<String, Object>() {
+            {
+                put("id", id);
+                put("action",  server + "/api/categories/" + id);
+            }
+        };
+        return prepareModelAndView("manage/article/category_form.html",categoriesList);
+    }
+
     @GetMapping("/article/category_list")
     public ModelAndView articleCategoryList() {
         List<Category> categories = articleService.getCategories();

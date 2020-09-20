@@ -13,6 +13,21 @@
         <result property="description" column="description"/>
     </resultMap>
 
+    <resultMap id="ArticleResultMap" type="com.zhengj.model.Article">
+        <result property="id" column="id"/>
+        <result property="categoryId" column="category_id"/>
+        <result property="createdAt" column="created_at"/>
+        <result property="imageId" column="image_id"/>
+        <result property="updatedAt" column="updated_at"/>
+        <result property="publishAt" column="publish_at"/>
+        <result property="textId" column="text_id"/>
+        <result property="userId" column="user_id"/>
+        <result property="views" column="views"/>
+        <result property="tag" column="tag"/>
+        <result property="name" column="NAME"/>
+        <result property="description" column="description"/>
+    </resultMap>
+
     <select id="getCategories" resultMap="BaseResultMap">
 		select * from categories order by display_order asc;
 	</select>
@@ -21,5 +36,22 @@
     	INSERT INTO categories VALUES (#{id}, #{createdAt}, #{displayOrder},
     	 #{updatedAt}, #{version}, #{tag}, #{name}, #{description})
     </insert>
+
+    <update id="updateCategory" parameterType="com.zhengj.model.Category">
+    	update categories set updated_at = #{updatedAt},name = #{name},
+    	description = #{description}, tag=#{tag} where id = #{id}
+    </update>
+
+    <select id="getCategoriesById" resultMap="BaseResultMap" parameterType="Long">
+		select * from categories where id = #{0};
+	</select>
+
+    <select id="getArticleByCategoryId" resultMap="ArticleResultMap" parameterType="Long">
+		select * from articles where category_id = #{0};
+	</select>
+
+    <delete id="deleteCategoryById"  parameterType="Long">
+		delete from categories where id = #{0};
+	</delete>
 </mapper>
 

@@ -43,6 +43,8 @@
                     clearFormError();
                     this.$resource('{{ action }}').save(this.category).then(function (resp) {
                         resp.json().then(function (result) {
+                            console.log(result);
+                            console.log("result");
                             location.assign(serverPath + '/manage/article/category_list');
                         });
                     }, onJsonFormError);

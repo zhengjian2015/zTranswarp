@@ -9,6 +9,8 @@ public abstract class AbstractController {
 
     protected final Logger LOGGER = LoggerFactory.getLogger(getClass());
 
+    protected static final String ID = "{id:[0-9]{1,17}}";
+
     @Autowired
     protected ArticleService articleService;
 }

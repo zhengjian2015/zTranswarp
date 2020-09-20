@@ -10,6 +10,6 @@ import javax.persistence.MappedSuperclass;
 public abstract class AbstractSortableEntity extends AbstractEntity {
 
     @Column(nullable = false)
-    private long displayOrder;
+    private Long displayOrder;
 
 }

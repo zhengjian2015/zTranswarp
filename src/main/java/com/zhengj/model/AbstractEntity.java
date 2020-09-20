@@ -39,15 +39,15 @@ public abstract class AbstractEntity extends AbstractBean {
 
     @Id
     @Column(nullable = false, updatable = false)
-    private long id;
+    private Long id;
 
     @Column(nullable = false, updatable = false)
-    private long createdAt;
+    private Long createdAt;
 
     @Column(nullable = false)
-    private long updatedAt;
+    private Long updatedAt;
 
     @Column(nullable = false)
-    private long version;
+    private Long version;
 
 }
