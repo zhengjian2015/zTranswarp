@@ -13,12 +13,28 @@
         <result property="imageUrl" column="image_url"/>
     </resultMap>
 
+    <resultMap id="oAMap" type="com.zhengj.model.LocalAuth">
+        <result property="id" column="id"/>
+        <result property="createdAt" column="created_at"/>
+        <result property="userId" column="user_id"/>
+        <result property="updatedAt" column="updated_at"/>
+        <result property="version" column="VERSION"/>
+        <result property="passwd" column="passwd"/>
+        <result property="salt" column="salt"/>
+    </resultMap>
+
     <select id="getUsersByIds" resultMap="BaseResultMap" parameterType="Long">
         SELECT * FROM users
         WHERE id IN
         <foreach collection="ids" item="name" index="index" open="(" close=")" separator=",">
             #{name}
         </foreach>
+    </select>
+
+
+    <select id="getLocalAuthByUserId" resultMap="oAMap" parameterType="Long">
+        SELECT * FROM local_auths
+        WHERE user_id #{userId}
     </select>
 
 </mapper>

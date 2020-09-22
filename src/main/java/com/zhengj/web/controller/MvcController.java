@@ -3,10 +3,12 @@ package com.zhengj.web.controller;
 
 import com.zhengj.common.ApiException;
 import com.zhengj.enums.ApiError;
+import com.zhengj.model.LocalAuth;
 import com.zhengj.model.Topic;
 import com.zhengj.model.User;
 import com.zhengj.oauth.OAuthProviders;
 import com.zhengj.oauth.provider.AbstractOAuthConfiguration;
+import com.zhengj.util.HashUtil;
 import com.zhengj.web.view.i18n.Translator;
 import com.zhengj.web.view.i18n.Translators;
 import org.slf4j.Logger;
@@ -14,12 +16,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -106,6 +108,53 @@ public class MvcController extends AbstractController {
 
         return prepareModelAndView("signin.html", maps);
     }
+
+    @PostMapping("/auth/signin")
+    public ModelAndView signinLocal(@RequestParam("email") String email, @RequestParam("passwd") String password,
+                                    HttpServletRequest request, HttpServletResponse response) {
+        if (!this.passauthEnabled) {
+            throw new ApiException(ApiError.OPERATION_FAILED, null, "Password auth is disabled.");
+        }
+        if (password.length() != 64) {
+            return passwordAuthFailed();
+        }
+        // try find user by email:
+        email = StringUtils.trimAllWhitespace(email).toLowerCase();
+        User user = userService.fetchUserByEmail(email);
+        if (user == null || user.getLockedUntil() > System.currentTimeMillis()) {
+            return passwordAuthFailed();
+        }
+        // try find local auth by userId:
+        LocalAuth auth = userService.fetchLocalAuthByUserId(user.getId());
+        if (auth == null) {
+            return passwordAuthFailed();
+        }
+        // validate password:
+        String expectedPassword = HashUtil.hmacSha256(password, auth.getSalt());
+        if (!expectedPassword.equals(auth.getPasswd())) {
+            return passwordAuthFailed();
+        }
+        // set cookie:
+    /*    String cookieStr = CookieUtil.encodeSessionCookie(auth, System.currentTimeMillis() + LOCAL_EXPIRES_IN_MILLIS,
+                encryptService.getSessionHmacKey());
+        CookieUtil.setSessionCookie(request, response, cookieStr, LOCAL_EXPIRES_IN_SECONDS);
+        return new ModelAndView("redirect:" + HttpUtil.getReferer(request));*/
+        return null;
+    }
+
+    private ModelAndView passwordAuthFailed() {
+
+        Map<String, AbstractOAuthConfiguration> mas = this.oauthProviders.getOAuthConfigurations();
+        Map<String, Object> maps = new HashMap<String, Object>() {
+            {
+                put("type", "passauth");
+                put("oauthConfigurations", mas);
+                put("error", Boolean.TRUE);
+            }
+        };
+        return prepareModelAndView("signin.html", maps);
+    }
+
 
 
     private ModelAndView prepareModelAndView(String view, Map<String, Object> model) {

@@ -3,9 +3,11 @@ package com.zhengj.service;
 import com.zhengj.common.ApiException;
 import com.zhengj.dao.UserMapper;
 import com.zhengj.enums.ApiError;
+import com.zhengj.model.LocalAuth;
 import com.zhengj.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import tk.mybatis.mapper.entity.Example;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -36,4 +38,19 @@ public class UserService extends AbstractService<User> {
         List<User> users = userMapper.getUsersByIds(myIds);
         return users;
     }
+
+
+    public User fetchUserByEmail(String email) {
+        Example example = new Example(User.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("email",email);
+        List<User> userList = userMapper.selectByExample(example);
+        return userList.get(0);
+    }
+
+
+    public LocalAuth fetchLocalAuthByUserId(Long userId) {
+        return this.userMapper.getLocalAuthByUserId(userId).get(0);
+    }
+
 }
